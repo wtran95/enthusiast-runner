@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/database';
 import usersRouter from './routes/userRoutes';
+import routesRouter from './routes/routeRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -17,8 +18,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// User Routes
 app.use('/api/users', usersRouter);
+
+// Route Routes
+app.use('/api/routes', routesRouter);
 
 // Start server
 app.listen(PORT, () => {

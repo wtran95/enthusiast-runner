@@ -1,24 +1,24 @@
 import { Router } from 'express';
-import { User } from '../models/User';
+import { Route } from '../models/Route';
 
 const router = Router();
 
-// GET /api/users - List all users
+// GET /api//routes - List all users
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find();
-    res.json({ count: users.length, users });
+    const routes = await Route.find();
+    res.json({ count: routes.length, routes });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// POST /api/users/create - Test user creation
+// POST /api/routes/create - Test route creation
 router.post('/create', async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-    res.status(201).json({ message: 'User created!', user });
+    const route = new Route(req.body);
+    await route.save();
+    res.status(201).json({ message: 'Route created!', route });
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
