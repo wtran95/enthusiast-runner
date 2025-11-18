@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { Route } from '../models/Route';
+import { AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
@@ -14,9 +15,12 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/routes/create - Test route creation
-router.post('/create', async (req, res) => {
+router.post('/create', async (req: AuthRequest, res) => {
   try {
-    const route = new Route(req.body);
+    const route = new Route({
+      ...req.body,
+      userId: req.user!.userId,
+    });
     await route.save();
     res.status(201).json({ message: 'Route created!', route });
   } catch (error: any) {
