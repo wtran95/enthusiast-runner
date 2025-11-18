@@ -9,7 +9,9 @@ hashPassword(password).then((hash) => {
   console.log('Hash:', hash);
   console.log('=================================\n');
   console.log('Copy this hash and update your MongoDB document:');
-  console.log(`db.users.updateOne({ username: "test-user" }, { $set: { passwordHash: "${hash}" } })`);
+  console.log(
+    `db.users.updateOne({ username: "test-user" }, { $set: { passwordHash: "${hash}" } })`
+  );
   console.log('\n');
   process.exit(0);
 });

@@ -29,7 +29,7 @@
       <h2>Login Test</h2>
       <form id="loginForm">
         <div style="margin-bottom: 15px">
-          <label style="display: block; margin-bottom: 5px">Email:</label>
+          <label style="display: block; margin-bottom: 5px">Username:</label>
           <input
             type="text"
             id="username"
@@ -39,7 +39,7 @@
               border: 1px solid #ddd;
               border-radius: 4px;
             "
-            placeholder="test@example.com"
+            placeholder="testuser"
           />
         </div>
         <div style="margin-bottom: 15px">
@@ -84,102 +84,8 @@
       ></div>
     </div>
 
-    <script>
-      document
-        .getElementById('loginForm')
-        .addEventListener('submit', async (e) => {
-          e.preventDefault();
-
-          const username = document.getElementById('username').value;
-          const password = document.getElementById('password').value;
-          const resultDiv = document.getElementById('result');
-
-          try {
-            const response = await fetch('http://localhost:5000/auth/login', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include', // Important: Send/receive cookies
-              body: JSON.stringify({ username, password }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-              // ✅ STORE THE TOKEN in localStorage
-              localStorage.setItem('token', data.token);
-              console.log('Token saved to localStorage:', data.token);
-
-              resultDiv.style.display = 'block';
-              resultDiv.style.backgroundColor = '#d4edda';
-              resultDiv.style.color = '#155724';
-              resultDiv.innerHTML = `
-              <strong>Success!</strong><br/>
-              Token: ${data.token.substring(0, 20)}...<br/>
-              User: ${data.user.username} (${data.user.email})<br/>
-              <br/>
-              <button onclick="testProtectedRoute()" style="margin-top: 10px; padding: 8px 16px; cursor: pointer;">
-                Test Protected Route (GET /api/routes)
-              </button>
-            `;
-              console.log('Full response:', data);
-            } else {
-              resultDiv.style.display = 'block';
-              resultDiv.style.backgroundColor = '#f8d7da';
-              resultDiv.style.color = '#721c24';
-              resultDiv.innerHTML = `<strong>Error:</strong> ${data.error}`;
-            }
-          } catch (error) {
-            resultDiv.style.display = 'block';
-            resultDiv.style.backgroundColor = '#f8d7da';
-            resultDiv.style.color = '#721c24';
-            resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
-          }
-        });
-
-      // ✅ Test function to call protected route with Authorization header
-      async function testProtectedRoute() {
-        const token = localStorage.getItem('token');
-        const resultDiv = document.getElementById('result');
-
-        if (!token) {
-          alert('No token found. Please login first.');
-          return;
-        }
-
-        try {
-          console.log('Calling GET /api/routes with Authorization header...');
-          const response = await fetch('http://localhost:5000/api/routes', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`  // ✅ THIS IS THE KEY!
-            },
-          });
-
-          const data = await response.json();
-
-          if (response.ok) {
-            resultDiv.style.backgroundColor = '#d1ecf1';
-            resultDiv.style.color = '#0c5460';
-            resultDiv.innerHTML = `
-              <strong>Protected Route Success!</strong><br/>
-              Response: ${JSON.stringify(data, null, 2)}
-            `;
-            console.log('Protected route response:', data);
-          } else {
-            resultDiv.style.backgroundColor = '#f8d7da';
-            resultDiv.style.color = '#721c24';
-            resultDiv.innerHTML = `<strong>Protected Route Error:</strong> ${data.error || response.statusText}`;
-          }
-        } catch (error) {
-          resultDiv.style.backgroundColor = '#f8d7da';
-          resultDiv.style.color = '#721c24';
-          resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
-        }
-      }
-    </script>
+    <!-- Auth test utilities (TypeScript) -->
+    <script type="module" src="/src/utils/auth-test.ts"></script>
 
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

@@ -82,11 +82,6 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Verify password
-    console.log('Password from request:', password);
-    console.log('User passwordHash:', user.passwordHash);
-    console.log('Types:', typeof password, typeof user.passwordHash);
-
     const isPasswordValid = await comparePassword(password, user.passwordHash);
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -101,14 +96,6 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SECRET!
     );
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-      sameSite: 'lax', // Allow same-site cross-origin
-      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day in milliseconds
-    });
-
-    // Return success
     // return landing page and disappear login panel
     res.json({
       message: 'Login successful',
