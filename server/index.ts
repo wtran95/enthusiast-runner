@@ -31,7 +31,7 @@ app.use('/api/users', authenticate, usersRouter);
 // Route Routes
 app.use('/api/routes', authenticate, routesRouter);
 // Auth Routes
-app.use('/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 // Start server
 app.listen(PORT, () => {
