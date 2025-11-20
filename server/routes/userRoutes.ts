@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { User } from '../models/User';
-import { authenticate, AuthRequest } from '../middleware/auth';
+import { AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
-// GET /api/users/me - Get current authenticated user
-router.get('/me', authenticate, async (req: AuthRequest, res) => {
+// GET /api/users/me - Get current authenticated user (protected by app-level authenticate)
+router.get('/me', async (req: AuthRequest, res) => {
   try {
     const user = await User.findById(req.user?.userId).select('-passwordHash');
 
